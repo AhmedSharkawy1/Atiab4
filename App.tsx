@@ -8,6 +8,7 @@ import { MenuItem, MenuSection as MenuSectionType, CartItem, AdditionGroup, Addi
 
 const WHATSAPP_NUMBER = "201092621367";
 const ADMIN_PASSWORD = "atiabnumber1";
+const MAPS_LINK = "https://www.google.com/maps/place/%D9%85%D8%B7%D8%B9%D9%85+%D9%81%D8%B7%D8%A7%D8%B7%D8%B1%D9%89+%D8%A7%D8%B7%D9%8A%D8%A7%D8%A8+%D8%A7%D9%84%D8%A8%D8%AF%D8%B1%D8%B4%D9%8A%D9%86%E2%80%AD/@29.8487742,31.2735716,17z/data=!3m1!4b1!4m6!3m5!1s0x145835000e5c3471:0xff8afd050dcf7b04!8m2!3d29.8487742!4d31.2709967!16s%2Fg%2F11yx79gyjb?entry=ttu&g_ep=EgoyMDI2MDExMy4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D";
 
 const AtyabLogo = ({ size = "w-16 h-16" }: { size?: string }) => (
   <div className={`${size} relative flex items-center justify-center overflow-hidden rounded-full border-[3px] border-[#eab308] shadow-md bg-white dark:bg-zinc-900 mb-4 transform transition-all duration-700 hover:rotate-6 active:scale-95 cursor-pointer p-1`}>
@@ -22,25 +23,21 @@ const MenuIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
 );
 
 const App: React.FC = () => {
-  // Theme state
   const [isDark, setIsDark] = useState<boolean>(() => {
     const saved = localStorage.getItem('theme');
     if (saved) return saved === 'dark';
     return true;
   });
 
-  // Admin states
   const [isAdmin, setIsAdmin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [passInput, setPassInput] = useState("");
   
-  // Menu Data state with persistence
   const [menuData, setMenuData] = useState<MenuSectionType[]>(() => {
     const saved = localStorage.getItem('atyab_menu_data');
     return saved ? JSON.parse(saved) : MENU_DATA;
   });
 
-  // Additions Data state with persistence
   const [additionsPizza, setAdditionsPizza] = useState<AdditionGroup>(() => {
     const saved = localStorage.getItem('atyab_additions_pizza');
     return saved ? JSON.parse(saved) : PIZZA_FATAYER_ADDITIONS;
@@ -60,13 +57,11 @@ const App: React.FC = () => {
   const [currentUrl, setCurrentUrl] = useState('');
   const [isSending, setIsSending] = useState(false);
 
-  // Modal Selection States
   const [selectedSizeIdx, setSelectedSizeIdx] = useState(0);
   const [selectedAddons, setSelectedAddons] = useState<{ name: string, price: number, quantity: number }[]>([]);
   const [itemNotes, setItemNotes] = useState("");
   const [itemQuantity, setItemQuantity] = useState(1);
 
-  // Checkout Form State
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
@@ -153,7 +148,6 @@ const App: React.FC = () => {
     }
   };
 
-  // --- Admin Functions ---
   const handleLogin = () => {
     if (passInput === ADMIN_PASSWORD) {
       setIsAdmin(true);
@@ -234,7 +228,6 @@ const App: React.FC = () => {
     triggerHaptic(50);
   };
 
-  // --- Cart Functions ---
   const resetItemStates = () => {
     setSelectedSizeIdx(0);
     setSelectedAddons([]);
@@ -343,7 +336,6 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-zinc-50 dark:bg-[#050505] text-zinc-900 dark:text-zinc-200 antialiased selection:bg-yellow-500/30">
       <Header isDark={isDark} onToggleTheme={() => setIsDark(!isDark)} onAction={() => triggerHaptic()} />
       
-      {/* Admin Floating Bar */}
       {isAdmin && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[55] bg-yellow-600 text-black px-6 py-3 rounded-full shadow-2xl flex items-center gap-4 animate-slide-up border border-black/10">
           <span className="font-black text-xs uppercase tracking-widest">وضع التعديل نشط</span>
@@ -440,10 +432,10 @@ const App: React.FC = () => {
                   <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">امسح الكود لمشاركة المنيو</p>
                </div>
                <div className="w-full border-t border-zinc-100 dark:border-white/5 pt-8 space-y-4">
-                  <a href="https://www.google.com/maps/search/R7XC+FC7+برج+أنس+الوجود" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group transition-transform active:scale-95">
+                  <a href={MAPS_LINK} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group transition-transform active:scale-95">
                     <span className="text-3xl mb-2 animate-emoji">📍</span>
                     <h4 className="text-xl font-black text-zinc-900 dark:text-white group-hover:text-yellow-600 transition-colors leading-none">موقعنا على الخريطة</h4>
-                    <p className="text-sm font-bold text-zinc-500 mt-2">برج أنس الوجود - البدرشين</p>
+                    <p className="text-sm font-bold text-zinc-500 mt-2">البدرشين - مطعم أطياب</p>
                   </a>
                </div>
             </div>
@@ -633,7 +625,6 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Floating Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-[60] px-4 pb-10 pt-2 md:hidden">
         <div className="max-w-xl mx-auto glass border border-zinc-200 dark:border-white/10 rounded-[2.5rem] p-1 flex items-center justify-around shadow-xl relative">
           {(showBottomCallMenu || showCategoriesMenu) && (
@@ -663,7 +654,7 @@ const App: React.FC = () => {
           <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="bg-yellow-600 w-14 h-14 rounded-full flex items-center justify-center text-black shadow-lg -mt-10 border-4 border-white dark:border-[#050505] active:scale-90 z-[63] transition-all">
             <span className="text-lg animate-emoji">🔝</span>
           </button>
-          <a href={`https://www.google.com/maps/search/R7XC+FC7+برج+أنس+الوجود`} target="_blank" rel="noopener noreferrer" className="flex-1 flex flex-col items-center py-2 text-zinc-500 active:scale-90 transition-transform">
+          <a href={MAPS_LINK} target="_blank" rel="noopener noreferrer" className="flex-1 flex flex-col items-center py-2 text-zinc-500 active:scale-90 transition-transform">
             <span className="text-xl animate-emoji">📍</span>
             <span className="text-[8px] font-black text-zinc-400 mt-0.5">الموقع</span>
           </a>
